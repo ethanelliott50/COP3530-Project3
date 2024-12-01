@@ -6,11 +6,22 @@
     #1. whether white/black can still castle kingside/queenside
     #2. whether en passant is available for a given pair of pawns in the right spots\
 
-from constraints import Board
+# white_turn bool used to keep track of turn (false for balck's turn)
 
-def inCheck(poition, turn):
-    #TODO should return true if given player is in check
-    return False
+# TODO list:
+# 1. make function that looks for checks (this function can be made more efficient; it need not check every square in
+# the position but only what has changed in the last move)
+# 2. en passant
+# 3. castling
+# 4. eval. function
+# 5. Minimax
+
+
+
+
+from constraints import Board
+import time
+from datetime import timedelta
 
 
 def FENtoArr(fen_string):
@@ -33,13 +44,16 @@ def FENtoArr(fen_string):
             curr_row += 1
     return board
 
+
 if __name__ == '__main__':
     fen = input()
     start_position = FENtoArr(fen)
 
+    starttime = time.perf_counter()
+
     board_object = Board(start_position)
-    print("START POSITION: ")
-    board_object.printBoard(start_position)
-    print()
-    board_object.findLegalPositions(board_object.current_position, 1)
+    board_object.findLegalPositions(start_position)
     board_object.printLegalPositions()
+
+    duration = timedelta(seconds=time.perf_counter() - starttime)
+    print('Job took: ', duration)
