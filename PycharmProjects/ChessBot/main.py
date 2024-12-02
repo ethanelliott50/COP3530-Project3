@@ -1,6 +1,5 @@
 # The sequence "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR" describes the piece placement
 # field of the starting position of a game of chess.
-
 # this function determines all legal positions possible from a given postion
 # it must take in the current position, whose turn it is as well as
     #1. whether white/black can still castle kingside/queenside
@@ -16,10 +15,8 @@
 # 4. eval. function
 # 5. Minimax
 
-
-
-
 from constraints import Board
+import constraints
 import time
 from datetime import timedelta
 
@@ -52,8 +49,12 @@ if __name__ == '__main__':
     starttime = time.perf_counter()
 
     board_object = Board(start_position)
-    board_object.findLegalPositions(start_position)
+    print("START POSITION: ")
+    board_object.printBoard(start_position)
+
+    board_object.findLegalPositions(start_position, False)
     board_object.printLegalPositions()
 
+    print(f"EVAL: {board_object.evaluate(start_position)}")
     duration = timedelta(seconds=time.perf_counter() - starttime)
     print('Job took: ', duration)
