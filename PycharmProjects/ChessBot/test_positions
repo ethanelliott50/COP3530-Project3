@@ -12,6 +12,8 @@ rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR
 
 8/8/8/8/k3PP1q/8/4K3/8
 
+8/8/8/8/8/p6P/8/8
+
 [["0", "0", "0", "0", "0", "0", "0", "0"],
  ["0", "0", "0", "0", "0", "0", "0", "0"],
  ["0", "0", "0", "0", "0", "0", "0", "0"],
@@ -20,3 +22,13 @@ rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR
  ["0", "0", "0", "0", "0", "0", "0", "0"],
  ["0", "0", "0", "K", "0", "0", "0", "0"],
  ["0", "0", "0", "0", "0", "0", "0", "0"]]
+
+ queue = [self.root_position]
+        start_half_moves = self.root_position.half_move
+        while queue:    # while queue is not empty
+            top = queue[0]
+            if top.half_move - start_half_moves < depth:
+                top.addLegalPositions()
+                for position in top.legal_positions:
+                    queue.append(position)
+            queue.pop(0)

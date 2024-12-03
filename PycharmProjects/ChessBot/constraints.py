@@ -1,11 +1,11 @@
 
 from pieces import PieceSets
 
-class Board:
-    legal_positions = []
-    current_position = []
 
-    def __init__(self, current_position):
+class Board:
+    def __init__(self, current_position, half_move=1,  castle_W_Q=True, castle_W=True, castle_B_Q=True, castle_B=True):
+        # odd half move means it's white's turn, even means it's black's turn
+        self.half_move = half_move
         self.legal_positions = []
         self.current_position = current_position
 
@@ -20,7 +20,8 @@ class Board:
         new_position[start_row][start_col] = "0"
         return new_position
 
-    def printBoard(self, board):
+    def printBoard(self):
+        board = self.current_position
         for i in range(0, len(board)):
             for j in range(0, len(board[i])):
                 print(f"{board[i][j]}", end=" ")
@@ -181,7 +182,14 @@ class Board:
                     attacking.append([path[i][0], path[i][1]])
         return attacking
 
-    def findLegalPositions(self, position, white_turn=True, castle_W_Q=True, castle_W=True, castle_B_Q=True, castle_B=True):
+    def findLegalPositions(self):
+        position = self.current_position
+        positions = []
+        if self.half_move % 2 == 1:
+            white_turn = True
+        else:
+            white_turn = False
+            
         for row in range(0, 8):
             for col in range(0, 8):
                 if white_turn:  # white's turn
@@ -191,17 +199,17 @@ class Board:
                                 if row != 1:
                                     new_position = self.generatePosition(row, col, row - 1, col)
                                     if not self.inCheck(new_position, white_turn):
-                                        self.legal_positions.append(new_position)
+                                        positions.append(new_position)
                                 if row == 1:
                                     for piece in PieceSets.white_promotions:
                                         new_position = self.generatePosition(row, col, row - 1, col, piece)
                                         if not self.inCheck(new_position, white_turn):
-                                            self.legal_positions.append(new_position)
+                                            positions.append(new_position)
                             if row == 6:  # pawn can move two squares here
                                 if position[row - 1][col] == "0" and position[row - 2][col] == "0":
                                     new_position = self.generatePosition(row, col, row - 2, col)
                                     if not self.inCheck(new_position, white_turn):
-                                        self.legal_positions.append(new_position)
+                                        positions.append(new_position)
                 if not white_turn:  # black's turn
                     if position[row][col] == "p":
                         if row < 7:
@@ -209,25 +217,31 @@ class Board:
                                 if row != 6:
                                     new_position = self.generatePosition(row, col, row + 1, col)
                                     if not self.inCheck(new_position, white_turn):
-                                        self.legal_positions.append(new_position)
+                                        positions.append(new_position)
                                 if row == 6:
                                     for piece in PieceSets.white_promotions:
                                         new_position = self.generatePosition(row, col, row - 1, col, piece)
                                         if not self.inCheck(new_position, white_turn):
-                                            self.legal_positions.append(new_position)
+                                            positions.append(new_position)
                             if row == 1:  # pawn can move two squares here
                                 if position[row + 1][col] == "0" and position[row + 2][col] == "0":
                                     new_position = self.generatePosition(row, col, row + 2, col)
                                     if not self.inCheck(new_position, white_turn):
-                                        self.legal_positions.append(new_position)
+                                        positions.append(new_position)
                 if white_turn == position[row][col].isupper():
                     new_coordinates = self.attacking(position, row, col)
                     for square in new_coordinates:
                         new_position = self.generatePosition(row, col, square[0], square[1])
                         if not self.inCheck(new_position, white_turn):
-                            self.legal_positions.append(new_position)
+                            positions.append(new_position)
+        return positions
 
-    def evaluate(self, position, white_turn=True):
+    def addLegalPositions(self):
+        positions = self.findLegalPositions()
+        for position in positions:
+            self.legal_positions.append(Board(position, self.half_move + 1))
+
+    def evaluate(self):
         # the following variables are various qualitites of a position, higher magnitude indicating greater advantage
         # with positive indicating advantage for white and negative for black.
         # weighted total of material based on importance of square that it occupies
@@ -249,25 +263,33 @@ class Board:
 
         for row in range(0, 8):
             for col in range(0, 8):
-                if position[row][col] != "0" and position[row][col] != "k" and position[row][col] != "K":
-                    # for now centrality is calculated this way, TODO calculate centrality more accurately and differently
-                    # for different pieces
-                    weighted_material += PieceSets.piece_values[position[row][col]] * self.centrality(row, col)
+                if self.current_position[row][col] not in {"0", "k", "K"}:
 
-                    squares_controlling = self.attacking(position, row, col)
+                    piece_worth = PieceSets.piece_values[self.current_position[row][col]] * self.centrality(row, col, self.current_position[row][col])
+                    weighted_material += piece_worth
+
+                    squares_controlling = self.attacking(self.current_position, row, col)
                     # weighted space is calculated with the following in mind:
                     # 1. a piece of lesser value having more space is better (develop your bishops before your queen)
                     # 2. attacking pieces of greater value is better (bishops should not stare at pawns)
                     # 3. controlling a central square is better than controlling an edge square
-
                     for square in squares_controlling:
-                        new_space = self.centrality(square[0], square[1]) / PieceSets.piece_values[position[row][col]]
-                        if position[square[0]][square[1]].isupper() != position[row][col].isupper():
-                            new_space *= PieceSets.piece_values[position[square[0]][square[1]]].__abs__()
+                        new_space = self.centrality(square[0], square[1], self.current_position[square[0]][square[1]]) / PieceSets.piece_values[self.current_position[row][col]]
+                        if self.current_position[square[0]][square[1]] not in {"0", "k", "K"}:
+                            if self.current_position[square[0]][square[1]].isupper() != self.current_position[row][col].isupper():
+                                new_space *= PieceSets.piece_values[self.current_position[square[0]][square[1]]].__abs__()
                         weighted_space += new_space
+        evaluation += weighted_material
         evaluation += weighted_space
         return evaluation
 
-    def centrality(self, row, col, piece="0"):
-        return 1 - (1 / 16) * (abs(row - 3.5) + abs(col - 3.5))
+    @staticmethod
+    def centrality(row, col, piece="0"):
+        # for now centrality is calculated this way, TODO calculate centrality more accurately and differently
+        # for different pieces
+        # 1 - (1 / 16) * (abs(row - 3.5) + abs(col - 3.5))
+        if piece.isupper():
+            return PieceSets.W_centrality_values[row][col]
+        return PieceSets.B_centrality_values[row][col]
+
 

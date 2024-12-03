@@ -19,6 +19,7 @@ from constraints import Board
 import constraints
 import time
 from datetime import timedelta
+from gametree import GameTree
 
 
 def FENtoArr(fen_string):
@@ -45,16 +46,20 @@ def FENtoArr(fen_string):
 if __name__ == '__main__':
     fen = input()
     start_position = FENtoArr(fen)
-
     starttime = time.perf_counter()
 
-    board_object = Board(start_position)
-    print("START POSITION: ")
-    board_object.printBoard(start_position)
+    tree = GameTree(start_position, 3)
+    tree.find_best_move()
 
-    board_object.findLegalPositions(start_position, False)
-    board_object.printLegalPositions()
 
-    print(f"EVAL: {board_object.evaluate(start_position)}")
+
+
+
+
+
+
+
+
+
     duration = timedelta(seconds=time.perf_counter() - starttime)
     print('Job took: ', duration)
