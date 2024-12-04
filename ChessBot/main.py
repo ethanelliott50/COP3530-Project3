@@ -18,8 +18,6 @@
 from constraints import Board
 import constraints
 import misc
-import time
-from datetime import timedelta
 from gametree import GameTree
 
 
