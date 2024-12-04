@@ -57,10 +57,8 @@ def printBoard(board):
                 print(f"{board[i][j]}", end=" ")
             print()
 
-# Example usage
 def best_pos(board):
     best_pos = get_best_pos(board)
     print("Best Pos:")
     printBoard(best_pos)
     
-best_pos(misc.FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
