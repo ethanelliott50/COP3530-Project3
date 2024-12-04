@@ -23,18 +23,3 @@ from gametree import GameTree
 
 if __name__ == '__main__':
     misc.playComputer()
-
-
-
-
-
-
-
-
-
-
-
-
-
-    duration = timedelta(seconds=time.perf_counter() - starttime)
-    print('Job took: ', duration)
