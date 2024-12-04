@@ -3,6 +3,8 @@ from gametree import GameTree
 from constraints import Board
 import time
 from datetime import timedelta
+import ml
+import train
 
 def FENtoArr(fen_string):
     board = []
@@ -24,10 +26,9 @@ def FENtoArr(fen_string):
             curr_row += 1
     return board
 
-
-def playComputer(play_as="white"):
+def playComputer(computer_type,depth=4,play_as="white"):
     start_board = FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-    game_tree = GameTree(start_board, 4)
+    game_tree = GameTree(start_board, depth)
     game_tree.root_position.printBoard()
     while True:
         if play_as == "white":
@@ -41,7 +42,11 @@ def playComputer(play_as="white"):
             game_tree.root_position = Board(new_board, game_tree.root_position.half_move + 1)
 
             game_tree.root_position.addLegalPositions()
-            computer_move = game_tree.find_best_move()
+            if computer_type == "1":
+                computer_move = game_tree.find_best_move()
+            if computer_type == "2":
+                computer_move = ml.best_pos(new_board)
+
             game_tree.root_position = computer_move
             computer_move.printBoard()
             duration = timedelta(seconds=time.perf_counter() - starttime)
