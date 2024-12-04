@@ -285,11 +285,15 @@ class Board:
 
     @staticmethod
     def centrality(row, col, piece="0"):
-        # for now centrality is calculated this way, TODO calculate centrality more accurately and differently
-        # for different pieces
+        # for now centrality is calculated this way, TODO calculate centrality more accurately and differentlyfor different pieces 
         # 1 - (1 / 16) * (abs(row - 3.5) + abs(col - 3.5))
         if piece.isupper():
+            if piece == "P":
+                return 0.65*PieceSets.W_centrality_values[row][col] + 0.35*PieceSets.W_pawn_promotion_proximity[row][col]
             return PieceSets.W_centrality_values[row][col]
+
+        if piece == "p":
+            return 0.65*PieceSets.B_centrality_values[row][col] + 0.35*PieceSets.B_pawn_promotion_proximity[row][col]
         return PieceSets.B_centrality_values[row][col]
 
 
