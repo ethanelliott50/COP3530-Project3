@@ -26,6 +26,7 @@ def FENtoArr(fen_string):
             curr_row += 1
     return board
 
+
 def playComputer(computer_type,depth=4,play_as="white"):
     start_board = FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     game_tree = GameTree(start_board, depth)
@@ -45,7 +46,7 @@ def playComputer(computer_type,depth=4,play_as="white"):
             if computer_type == "1":
                 computer_move = game_tree.find_best_move()
             if computer_type == "2":
-                computer_move = ml.best_pos(new_board)
+                computer_move = ml.get_best_pos(new_board)
 
             game_tree.root_position = computer_move
             computer_move.printBoard()
