@@ -15,10 +15,8 @@
 # 4. eval. function
 # 5. Minimax
 
-from constraints import Board
-import constraints
+
 import misc
-from gametree import GameTree
 import ml
 import train
 
