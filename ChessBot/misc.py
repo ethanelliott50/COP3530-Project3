@@ -17,3 +17,22 @@ def FENtoArr(fen_string):
             curr_col = 0
             curr_row += 1
     return board
+    
+def playComputer(play_as="white"):
+    start_board = FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+    game_tree = GameTree(start_board, 5)
+    game_tree.root_position.printBoard()
+    while True:
+        if play_as == "white":
+            start_row = int(input())
+            start_col = int(input())
+            end_row = int(input())
+            end_col = int(input())
+
+            new_board = game_tree.root_position.generatePosition(start_row, start_col, end_row, end_col)
+            game_tree.root_position = Board(new_board, game_tree.root_position.half_move + 1)
+
+            game_tree.root_position.addLegalPositions()
+            computer_move = game_tree.find_best_move()
+            game_tree.root_position = computer_move
+            computer_move.printBoard()
