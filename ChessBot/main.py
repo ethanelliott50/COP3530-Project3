@@ -19,7 +19,8 @@ from constraints import Board
 import constraints
 import misc
 from gametree import GameTree
-
+import ml
+import train
 
 if __name__ == '__main__':
     misc.playComputer()
