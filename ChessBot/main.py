@@ -24,8 +24,6 @@ from gametree import GameTree
 
 
 if __name__ == '__main__':
-    fen = input()
-    start_position = misc.FENtoArr(fen)
     misc.playComputer()
 
 
