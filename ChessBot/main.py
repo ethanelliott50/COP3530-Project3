@@ -16,10 +16,22 @@
 # 5. Minimax
 
 
+import constraints
 import misc
-import ml
 import train
 
 if __name__ == '__main__':
     train.run()
-    misc.playComputer()
+    print("Choose mode: ")
+    print("1. Play minimax bot")
+    print("2. Play ML bot")
+    print("3. ML bot vs minimax")
+
+    option = input()
+
+    if option == 1:
+        print("Choose depth")
+        depth = int(input())
+        misc.playComputer("1", depth)
+    if option == "2":
+        misc.playComputer("2")
