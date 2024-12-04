@@ -33,30 +33,30 @@ class GameTree:
         best_move.printBoard()
         return best_move
 
-def minimax(self, position, half_move, depth, alpha=-math.inf, beta=math.inf):    # Alpha-Beta Pruning Included for Faster Performance. See below for previous minimax.
-    if depth == 0:
-        return position.evaluate()
-    position.addLegalPositions()
-    candidate_moves = position.legal_positions
-
-    if half_move % 2 == 1:
-        max_eval = -math.inf
-        for move in candidate_moves:
-            eval = self.minimax(move, half_move + 1, depth - 1, alpha, beta)
-            max_eval = max(max_eval, eval)
-            alpha = max(alpha, eval)
-            if beta <= alpha:
-                break
-        return max_eval
-    else:
-        min_eval = math.inf
-        for move in candidate_moves:
-            eval = self.minimax(move, half_move + 1, depth - 1, alpha, beta)
-            min_eval = min(min_eval, eval)
-            beta = min(beta, eval)
-            if beta <= alpha:
-                break
-        return min_eval
+    def minimax(self, position, half_move, depth, alpha=-math.inf, beta=math.inf):    # Alpha-Beta Pruning Included for Faster Performance. See below for previous minimax.
+        if depth == 0:
+            return position.evaluate()
+        position.addLegalPositions()
+        candidate_moves = position.legal_positions
+    
+        if half_move % 2 == 1:
+            max_eval = -math.inf
+            for move in candidate_moves:
+                eval = self.minimax(move, half_move + 1, depth - 1, alpha, beta)
+                max_eval = max(max_eval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break
+            return max_eval
+        else:
+            min_eval = math.inf
+            for move in candidate_moves:
+                eval = self.minimax(move, half_move + 1, depth - 1, alpha, beta)
+                min_eval = min(min_eval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break
+            return min_eval
 
     # def minimax(self, position, half_move, depth):
     #     if depth == 0:
