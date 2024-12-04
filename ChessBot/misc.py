@@ -1,3 +1,9 @@
+
+from gametree import GameTree
+from constraints import Board
+import time
+from datetime import timedelta
+
 def FENtoArr(fen_string):
     board = []
     for i in range(0, 8):
@@ -17,10 +23,11 @@ def FENtoArr(fen_string):
             curr_col = 0
             curr_row += 1
     return board
-    
+
+
 def playComputer(play_as="white"):
     start_board = FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-    game_tree = GameTree(start_board, 5)
+    game_tree = GameTree(start_board, 4)
     game_tree.root_position.printBoard()
     while True:
         if play_as == "white":
@@ -29,6 +36,7 @@ def playComputer(play_as="white"):
             end_row = int(input())
             end_col = int(input())
 
+            starttime = time.perf_counter()
             new_board = game_tree.root_position.generatePosition(start_row, start_col, end_row, end_col)
             game_tree.root_position = Board(new_board, game_tree.root_position.half_move + 1)
 
@@ -36,3 +44,5 @@ def playComputer(play_as="white"):
             computer_move = game_tree.find_best_move()
             game_tree.root_position = computer_move
             computer_move.printBoard()
+            duration = timedelta(seconds=time.perf_counter() - starttime)
+            print("Thought for", duration, "seconds")
