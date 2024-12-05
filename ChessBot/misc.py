@@ -39,7 +39,7 @@ def playComputer(board, computer_type, depth, white):
         board.printBoard()
 
 def move(input, board):
-    if ord(input[0]) > 96 and ord(input[0]) < 105 and input[0] != 98:
+    if ord(input[0]) > 96 and ord(input[0]) < 105 and ord(input[0]) != 98:
         board.current_position = board.generatePosition(8 - int(input[1]), ord(input[0]) - 97, 8 - int(input[3]), ord(input[2]) - 97, "")
     else:
         board.current_position = board.generatePosition(8 - int(input[2]), ord(input[1]) - 97, 8 - int(input[5]), ord(input[4]) - 97, "")
