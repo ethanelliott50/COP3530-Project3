@@ -22,15 +22,25 @@ import train
 
 if __name__ == '__main__':
     train.run()
+    depth = int(input("Choose a minimax depth\n"))
+    board = Board(misc.FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"), depth)
     print("Choose mode: ")
     print("1. Play minimax bot")
     print("2. Play ML bot")
     print("3. ML bot vs minimax")
 
+    option = input()
+
     if option == "1":
-        print("Choose depth")
-        depth = int(input())
         misc.playComputer(board, "1", depth)
+        while True:
+            human_move = input("Move:\n")
+            if(human_move == "end"):
+                break
+            else:
+                misc.move(human_move, board)
+                board.printBoard()
+                misc.playComputer(board, "1", depth)
         
     elif option == "2":
         misc.playComputer(board, "2", depth)
