@@ -16,9 +16,9 @@
 >
 > __NOTE__: If you selected option 1, you will also have to enter a depth. It is recommended that a depth of 1-5 be selected (see Limitations below).
 >
-> b) In order to play against the ML or Minimax Algorithm Chess Engines, simply enter the position of the piece and the position you would like to move this piece to.
+> b) In order to play against the ML or Minimax Algorithm Chess Engines, simply enter the position of the piece and the position you would like to move this piece to (long algebraic notation).
 > 
->    For Example:
+>    For Example: bc8bh3
 >
 
 ##  Features ♛
