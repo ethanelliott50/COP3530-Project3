@@ -27,7 +27,7 @@ if __name__ == '__main__':
     print("2. Play ML bot")
     print("3. ML bot vs minimax")
 
-if option == "1":
+    if option == "1":
         print("Choose depth")
         depth = int(input())
         misc.playComputer(board, "1", depth)
