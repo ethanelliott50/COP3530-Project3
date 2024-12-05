@@ -31,6 +31,7 @@ def playComputer(board, computer_type, depth):
     if computer_type == "1":
         game_tree = GameTree(board.current_position, depth)
         best_pos = game_tree.find_best_move()
+        board.current_position = best_pos.current_position
         best_pos.printBoard
     elif computer_type == "2":
         best_pos = ml.get_best_pos(board.current_position)
