@@ -27,9 +27,9 @@ def FENtoArr(fen_string):
     return board
 
 
-def playComputer(board, computer_type, depth):
+def playComputer(board, computer_type, depth, white):
     if computer_type == "1":
-        game_tree = GameTree(board.current_position, depth)
+        game_tree = GameTree(board.current_position, depth, white)
         best_pos = game_tree.find_best_move()
         board.current_position = best_pos.current_position
         best_pos.printBoard
