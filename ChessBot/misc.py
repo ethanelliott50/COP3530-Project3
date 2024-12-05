@@ -27,31 +27,15 @@ def FENtoArr(fen_string):
     return board
 
 
-def playComputer(computer_type,depth=4,play_as="white"):
-    start_board = FENtoArr("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-    game_tree = GameTree(start_board, depth)
-    game_tree.root_position.printBoard()
-    while True:
-        if play_as == "white":
-            start_row = int(input())
-            start_col = int(input())
-            end_row = int(input())
-            end_col = int(input())
-
-            starttime = time.perf_counter()
-            new_board = game_tree.root_position.generatePosition(start_row, start_col, end_row, end_col)
-            game_tree.root_position = Board(new_board, game_tree.root_position.half_move + 1)
-
-            game_tree.root_position.addLegalPositions()
-            if computer_type == "1":
-                computer_move = game_tree.find_best_move()
-            if computer_type == "2":
-                computer_move = ml.get_best_pos(new_board)
-
-            game_tree.root_position = computer_move
-            computer_move.printBoard()
-            duration = timedelta(seconds=time.perf_counter() - starttime)
-            print("Thought for", duration, "seconds")
+def playComputer(board, computer_type, depth):
+    if computer_type == "1":
+        game_tree = GameTree(board.current_position, depth)
+        best_pos = game_tree.find_best_move()
+        best_pos.printBoard
+    elif computer_type == "2":
+        best_pos = ml.get_best_pos(board.current_position)
+        board.current_position = best_pos
+        board.printBoard()
 
 def move(input, board):
     if ord(input[0]) > 96 and ord(input[0]) < 105 and input[0] != 98:
