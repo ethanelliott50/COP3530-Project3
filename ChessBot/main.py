@@ -27,11 +27,18 @@ if __name__ == '__main__':
     print("2. Play ML bot")
     print("3. ML bot vs minimax")
 
-    option = input()
-
-    if option == 1:
+if option == "1":
         print("Choose depth")
         depth = int(input())
-        misc.playComputer("1", depth)
-    if option == "2":
-        misc.playComputer("2")
+        misc.playComputer(board, "1", depth)
+        
+    elif option == "2":
+        misc.playComputer(board, "2", depth)
+        while True:
+            human_move = input("Move:\n")
+            if(human_move == "end"):
+                break
+            else:
+                misc.move(human_move, board)
+                board.printBoard()
+                misc.playComputer(board, "2", depth)
