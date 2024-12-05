@@ -28,11 +28,12 @@ if __name__ == '__main__':
     print("1. Play minimax bot")
     print("2. Play ML bot")
     print("3. ML bot vs minimax")
+    white = 1
 
     option = input()
 
     if option == "1":
-        misc.playComputer(board, "1", depth)
+        misc.playComputer(board, "1", depth, white)
         while True:
             human_move = input("Move:\n")
             if(human_move == "end"):
@@ -40,10 +41,10 @@ if __name__ == '__main__':
             else:
                 misc.move(human_move, board)
                 board.printBoard()
-                misc.playComputer(board, "1", depth)
+                misc.playComputer(board, "1", depth, white)
         
     elif option == "2":
-        misc.playComputer(board, "2", depth)
+        misc.playComputer(board, "2", depth, white)
         while True:
             human_move = input("Move:\n")
             if(human_move == "end"):
@@ -51,4 +52,19 @@ if __name__ == '__main__':
             else:
                 misc.move(human_move, board)
                 board.printBoard()
-                misc.playComputer(board, "2", depth)
+                misc.playComputer(board, "2", depth, white)
+    elif option == "3":
+        AI = True
+        while True:
+            forward = input("Type next to continue, type end to exit:\n")
+            if(forward == "end"):
+                break
+            else:
+                if AI:
+                    misc.playComputer(board, "2", depth, white)
+                    AI = not AI
+                    white += 1
+                else:  
+                    misc.playComputer(board, "1", depth, white)
+                    AI = not AI
+                    white += 1
